@@ -1,0 +1,21 @@
+{
+  "name": "featvalue/php-sdk",
+  "description": "FeatValue PHP SDK",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Stefan Wienströer",
+      "email": "s.wienstroeer@a-coding-project.de"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "ext-json": "*",
+    "ext-curl": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Featvalue\\PhpSdk\\": "src/"
+    }
+  }
+}
