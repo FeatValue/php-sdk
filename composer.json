@@ -15,7 +15,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Featvalue\\PhpSdk\\": "src/"
+      "Featvalue\\": "src/"
     }
   }
 }
