@@ -105,10 +105,10 @@ class Api {
      * @return string|array
      */
     private function sendRequest($path, string $method = null, array $data = null): array|string {
-        if (empty($this->token) && !array_key_exists("token", $data)) {
-            return "Please authorize";
-        } else if (array_key_exists("token", $data)) {
+        if (is_array($data) && array_key_exists("token", $data)) {
             $this->token = $data['token'];
+        } else if (empty($this->token)) {
+            return "Please authorize";
         }
 
         $url = $this->getHost() . $path . "?app_key=" . urlencode($this->publicKey) . "&token=" . urlencode($this->token);
