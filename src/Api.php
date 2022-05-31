@@ -171,7 +171,7 @@ class Api {
         $result = [];
 
         if (!empty($timeEntries)) {
-            foreach ($timeEntries['data'] as $timeEntry) {
+            foreach ($timeEntries['time-entries'] as $timeEntry) {
                 try {
                     $timeEntry['timeFrom'] = new DateTime($timeEntry['time_from']);
                     $timeEntry['timeTo'] = new DateTime($timeEntry['time_to']);
@@ -214,7 +214,7 @@ class Api {
         $result = [];
 
         if (!empty($clients)) {
-            foreach ($clients['data'] as $client) {
+            foreach ($clients['clients'] as $client) {
                 $result[] = new Company($client);
             }
         }
