@@ -19,13 +19,27 @@ class Api {
      * API constructor
      *
      * @param string $publicKey
-     * @param string $token
+     * @param string|null $token
      * @param string $host
      */
-    public function __construct(string $publicKey, string $token, string $host = "https://app.featvalue.io/api") {
+    public function __construct(string $publicKey, string $token = null, string $host = "https://app.featvalue.io/api") {
         $this->publicKey = $publicKey;
         $this->token = $token;
         $this->setHost($host);
+    }
+
+    /**
+     * Authorize with a token
+     * @param string $token
+     * @param string $redirect
+     * @param string $lang
+     * @return array|string
+     */
+    public function authorize(string $token, string $redirect, string $lang): array|string {
+        return $this->sendRequest("/authorize", "GET", [
+            'token' => $token,
+            'redirect' => $redirect,
+            'lang' => $lang]);
     }
 
     /**
@@ -90,7 +104,13 @@ class Api {
      * @param array|null $data data for request body
      * @return string|array
      */
-    private function sendRequest($path, string $method = null, array $data = null) {
+    private function sendRequest($path, string $method = null, array $data = null): array|string {
+        if (empty($this->token) && !array_key_exists("token", $data)) {
+            return "Please authorize";
+        } else if (array_key_exists("token", $data)) {
+            $this->token = $data['token'];
+        }
+
         $url = $this->getHost() . $path . "?app_key=" . urlencode($this->publicKey) . "&token=" . urlencode($this->token);
 
         if (!empty($data) && $method === "GET") {
@@ -175,7 +195,7 @@ class Api {
         $projects = $this->get('/projects');
         $result = [];
 
-        if(!empty($projects)) {
+        if (!empty($projects)) {
             foreach ($projects['projects'] as $project) {
                 $result[] = new Project($project);
             }
