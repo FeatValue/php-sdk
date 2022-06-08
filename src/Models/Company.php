@@ -9,7 +9,7 @@ class Company {
     private string $name;
     private int $owner_company_id;
     private string $token;
-    private array $projects;
+    private ?array $projects = null;
 
     public function __construct(array $properties) {
         foreach($properties as $key => $value){
@@ -43,7 +43,7 @@ class Company {
      * @return array
      */
     public function getProjects(): array {
-        return $this->projects;
+        return $this->projects ?: array();
     }
 
 }
