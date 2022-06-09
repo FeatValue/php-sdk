@@ -44,7 +44,13 @@ class Company {
      * @return array
      */
     public function getProjects(): array {
-        return $this->projects ?: array();
+        $result = [];
+        if (!empty($this->projects)) {
+            foreach ($this->projects as $project) {
+                $result[] = new Project($project);
+            }
+        }
+        return $result;
     }
 
     /**
