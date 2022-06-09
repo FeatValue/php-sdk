@@ -2,8 +2,11 @@
 
 namespace FeatValue\Models;
 
+use FeatValue\Api;
+
 class Project {
 
+    private int $id;
     private string $name;
     private string $token;
 
@@ -26,6 +29,15 @@ class Project {
      */
     public function getToken(): string {
         return $this->token;
+    }
+
+    /**
+     * @param Api $api
+     * @param array $data
+     * @return array|string
+     */
+    public function addAppFields(Api $api, array $data): array|string {
+        return $api->patch('/data/projects/' . $this->id . '/fields', ['fields' => $data]);
     }
 
 

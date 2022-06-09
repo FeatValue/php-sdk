@@ -3,9 +3,11 @@
 namespace FeatValue\Models;
 
 use DateTime;
+use FeatValue\Api;
 
 class Task {
 
+    private int $id;
     private string $name;
     private string $description;
     private int $projectId;
@@ -92,5 +94,16 @@ class Task {
     public function getToken(): string {
         return $this->token;
     }
+
+
+    /**
+     * @param Api $api
+     * @param array $data
+     * @return array|string
+     */
+    public function addAppFields(Api $api, array $data): array|string {
+        return $api->patch('/data/tasks/' . $this->id . '/fields', ['fields' => $data]);
+    }
+
 
 }

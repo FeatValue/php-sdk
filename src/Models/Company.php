@@ -2,18 +2,19 @@
 
 namespace FeatValue\Models;
 
-use DateTime;
+use FeatValue\Api;
 
 class Company {
 
+    private int $id;
     private string $name;
     private int $owner_company_id;
     private string $token;
     private ?array $projects = null;
 
     public function __construct(array $properties) {
-        foreach($properties as $key => $value){
-            if(property_exists($this, $key))
+        foreach ($properties as $key => $value) {
+            if (property_exists($this, $key))
                 $this->{$key} = $value;
         }
     }
@@ -44,6 +45,15 @@ class Company {
      */
     public function getProjects(): array {
         return $this->projects ?: array();
+    }
+
+    /**
+     * @param Api $api
+     * @param array $data
+     * @return array|string
+     */
+    public function addAppFields(Api $api, array $data): array|string {
+        return $api->patch('/data/clients/' . $this->id . '/fields', ['fields' => $data]);
     }
 
 }
