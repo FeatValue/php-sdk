@@ -3,9 +3,11 @@
 namespace FeatValue\Models;
 
 use DateTime;
+use FeatValue\Api;
 
 class TimeEntry {
 
+    private int $id;
     private int $projectId;
     private DateTime $timeFrom;
     private DateTime $timeTo;
@@ -51,6 +53,15 @@ class TimeEntry {
      */
     public function getTaskId(): int {
         return $this->taskId;
+    }
+
+    /**
+     * @param Api $api
+     * @param array $data
+     * @return array|string
+     */
+    public function addAppFields(Api $api, array $data): array|string {
+        return $api->patch('/data/time-entries/' . $this->id . '/fields', ['fields' => $data]);
     }
 
 }
