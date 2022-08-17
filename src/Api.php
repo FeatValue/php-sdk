@@ -4,6 +4,8 @@ namespace FeatValue;
 
 use DateTime;
 use Exception;
+use FeatValue\Exceptions\ApiException;
+use FeatValue\Exceptions\ValidationException;
 use FeatValue\Models\Company;
 use FeatValue\Models\Project;
 use FeatValue\Models\Task;
@@ -96,14 +98,17 @@ class Api {
         return $this->get('/me');
     }
 
-    /**
-     * HTTP request helper
-     *
-     * @param $path
-     * @param string|null $method HTTP method, e.g. 'POST'
-     * @param array|null $data data for request body
-     * @return string|array
-     */
+	/**
+	 * HTTP request helper
+	 *
+	 * @param $path
+	 * @param string|null $method HTTP method, e.g. 'POST'
+	 * @param array|null $data data for request body
+	 *
+	 * @return string|array
+	 * @throws ApiException
+	 * @throws ValidationException
+	 */
     private function sendRequest($path, string $method = null, array $data = null): array|string {
         if (is_array($data) && array_key_exists("token", $data)) {
             $this->token = $data['token'];
@@ -130,9 +135,22 @@ class Api {
             curl_setopt($handler, CURLOPT_POSTFIELDS, http_build_query($data));
 
         $result = curl_exec($handler);
-        $result = json_decode($result, true);
+	    curl_close($handler);
 
-        curl_close($handler);
+        $result = @json_decode($result, true);
+
+		if(!$result){
+			throw new ApiException("Api sent invalid JSON (",$path." - ".$method.")");
+		}
+		if(isset($result['error'])){
+			throw new ApiException($result['error']);
+		}
+		if(isset($result['errors'])){
+			$exception = new ValidationException( $result['message'] ?? '' );
+			$exception->setErrors($result['errors']);
+			throw $exception;
+		}
+
         return $result;
     }
 
