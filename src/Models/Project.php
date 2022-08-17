@@ -37,7 +37,7 @@ class Project {
      * @return array|string
      */
     public function addAppFields(Api $api, array $data): array|string {
-        return $api->patch('/data/projects/' . $this->id . '/fields', ['fields' => $data]);
+        return $api->patch('/data/projects/' . $this->token . '/fields', ['fields' => $data]);
     }
 
 
