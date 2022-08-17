@@ -140,7 +140,7 @@ class Api {
         $result = @json_decode($result, true);
 
 		if(!$result){
-			throw new ApiException("Api sent invalid JSON (",$path." - ".$method.")");
+			throw new ApiException("Api sent invalid JSON (".$path." - ".$method.")");
 		}
 		if(isset($result['error'])){
 			throw new ApiException($result['error']);
