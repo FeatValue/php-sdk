@@ -189,7 +189,7 @@ class Api {
         $result = [];
 
         if (!empty($timeEntries)) {
-            foreach ($timeEntries['time-entries'] as $timeEntry) {
+            foreach ($timeEntries['time_entries'] as $timeEntry) {
                 try {
                     $timeEntry['timeFrom'] = new DateTime($timeEntry['time_from']);
                     $timeEntry['timeTo'] = new DateTime($timeEntry['time_to']);
